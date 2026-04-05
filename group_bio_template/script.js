@@ -19,15 +19,19 @@ function toggleBio(bioId) {
 function showSection(sectionId) {
     const biosSection = document.getElementById("bios");
     const visionSection = document.getElementById("vision");
+    const moodboardSection = document.getElementById("moodboard");
 
-    // Display the bios section and hide the vision section
+    // Hide everything first
+    biosSection.style.display = "none";
+    visionSection.style.display = "none";
+    moodboardSection.style.display = "none";
+
+    // Show the selected section
     if (sectionId === "bios") {
         biosSection.style.display = "flex";
-        visionSection.style.display = "none";
-    }
-    // Display the vision section and hide the bios section
-    else if (sectionId === "vision") {
-        biosSection.style.display = "none";
+    } else if (sectionId === "vision") {
         visionSection.style.display = "block";
+    } else if (sectionId === "moodboard") {
+        moodboardSection.style.display = "block";
     }
 }
