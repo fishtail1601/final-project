@@ -4,52 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Bio</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
     <h1>Meet Our Team</h1>
-    <!-- Example team logo -->
-    <img src="img/team-logo.png" alt="Team Logo" class="team-logo">
+    <img src="img/new_team_logo.png" alt="Team Logo" class="team-logo">
 
-    <!-- Navigation menu to switch between sections -->
     <nav>
         <button onclick="showSection('bios')">Team Bios</button>
         <button onclick="showSection('vision')">Team Vision</button>
+        <button onclick="showSection('moodboard')">Moodboard</button>
     </nav>
 </header>
 
-<!-- Team bios section (default section) -->
+<!-- Team bios section -->
 <div id="bios" class="container">
-    <!-- Each card represents an individual team member -->
+
     <div class="card">
-        <h2>John Doe</h2>
-        <p>Frontend Developer</p>
+        <img src="img/nathan_img.png" alt="Nathan IMG" class="team-logo">
+        <h2 class="name">Nathan Pereira</h2>
+        <p class="role">Software Developer</p>
         <button onclick="toggleBio('bio1')">Show Bio</button>
-        <p id="bio1" class="bio">John is a skilled frontend developer with 5 years of experience in creating responsive web applications.</p>
+        <p id="bio1" class="bio">
+            Nathan is a dedicated software developer focused on building efficient, scalable applications.
+            He will contribute to both frontend and backend development, ensuring seamless functionality
+            and a smooth user experience.
+        </p>
     </div>
+
     <div class="card">
-        <h2>Jane Smith</h2>
-        <p>Backend Developer</p>
+        <img src="img/new_team_logo.png" alt="Carter IMG" class="team-logo">
+        <h2>Carter Duda</h2>
+        <p>Scrum Master</p>
         <button onclick="toggleBio('bio2')">Show Bio</button>
-        <p id="bio2" class="bio">Jane is a backend developer specializing in server-side logic and database management.</p>
+        <p id="bio2" class="bio">
+            Carter is the Scrum Master, guiding the team through Agile practices and ensuring
+            effective collaboration. He facilitates sprint planning, removes blockers, and helps the
+            team stay focused on delivering high-quality results on time.
+        </p>
     </div>
+
     <div class="card">
-        <h2>Emily Johnson</h2>
-        <p>UI/UX Designer</p>
+        <img src="img/new_team_logo.png" alt="Brent IMG" class="team-logo">
+        <h2>Brent Siebsen</h2>
+        <p>Product Owner</p>
         <button onclick="toggleBio('bio3')">Show Bio</button>
-        <p id="bio3" class="bio">Emily is a UI/UX designer with a passion for creating user-friendly interfaces.</p>
+        <p id="bio3" class="bio">
+            Brent is the Product Owner responsible for defining the product vision and prioritizing
+            features. He works closely with stakeholders and the development team to ensure the final
+            product delivers maximum value and meets user needs.
+        </p>
     </div>
+
+    <div class="card">
+        <img src="img/new_team_logo.png" alt="Deeraj IMG" class="team-logo">
+        <h2>Deeraj Anandraj</h2>
+        <p>Software Developer</p>
+        <button onclick="toggleBio('bio4')">Show Bio</button>
+        <p id="bio4" class="bio">
+            Deeraj is will collaborate across different parts of the project.
+            He focuses on writing clean, maintainable code and plays a key role in implementing
+            features and debugging complex issues.
+        </p>
+    </div>
+
 </div>
 
-<!-- Team vision/mission statement section (hidden by default) -->
+<!-- Mission / Vision section -->
 <div id="vision" class="container" style="display: none;">
     <h2>Our Mission Statement</h2>
-    <p>We strive to create a collaborative, inclusive, and innovative environment where team members feel empowered to push boundaries and achieve excellence in their craft. Our mission is to deliver high-quality solutions that meet and exceed our clients' expectations.</p>
+    <p>
+        Our mission is to design and develop high-quality software solutions through strong collaboration,
+        effective communication, and disciplined Agile practices. As a team, we are committed to continuous
+        improvement, innovation, and accountability in every stage of the development process.
+    </p>
+    <p>
+        Guided by our Scrum Master and Product Owner, we strive to deliver user-centered products that solve
+        real-world problems while maintaining flexibility to adapt to changing requirements. We value teamwork,
+        transparency, and technical excellence, ensuring that each member contributes meaningfully to the
+        success of the project.
+    </p>
+
+    <p>Our team rules are as follows...</p>
+
+    <ul>
+        <li>In order to ensure commitment, every team member will complete their assigned tasks before the assigned due date. If tasks cannot be completed, then communication is required.</li>
+        <li>We will each take accountability for our successes and failures.</li>
+        <li>In order to demonstrate courage, we will speak up when something doesn’t make sense or may weaken the progress of the group.</li>
+        <li>We’ll be willing to ask for help and give completely honest feedback.</li>
+        <li>We can demonstrate focus by working only on specific goals at a time, making priorities, and keeping our meetings on track.</li>
+        <li>We’ll show openness by sharing our progress on our tasks with each other often as well as any concerns we may have.</li>
+        <li>All our work will be visible to each other as we will be open to feedback.</li>
+        <li>Respect will be demonstrated by listening when others are speaking and not interrupting.</li>
+        <li>We will also value each other’s contributions and try our best to be constructive and not overly critical when giving feedback.</li>
+</ul>
 </div>
 
-<script src="script.js"></script> <!-- Link to external JavaScript file -->
+<!-- Moodboard Section -->
+<div id="moodboard" class="container" style="display: none;">
+    <h2>Our Moodboard</h2>
+
+    <div class="moodboard-grid">
+        <div>
+            <h3>Nathan's Moodboard</h3>
+            <p>My influential figures in Computer Science are Alan Turing, Ada Lovelace, John Von Neumann</p>
+            <p>Favorite Quote: "The best way to predict the future is to invent it." - Alan Kay</p>
+            <h4>Favorite Tools:</h4>
+            <img src="img/vs_code.png" alt="VS Code Logo">
+            <img src="img/aseprite_logo.png" alt="Aseprite Logo">
+            <img src="img/github_logo.png" alt="GitHub Logo">
+        </div>
+        <div>
+            <h3>Carter's Moodboard</h3>
+            <img src="img/new_team_logo.png" alt="Color Palette">
+        </div>
+        <div>
+            <h3>Brent's Moodboard</h3>
+            <img src="img/new_team_logo.png" alt="App Layout">
+        </div>
+        <div>
+            <h3>Deeraj's Moodboard</h3>
+            <img src="img/new_team_logo.png" alt="User Experience">
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
