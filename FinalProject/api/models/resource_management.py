@@ -8,4 +8,4 @@ class ResourceManagement(Base):
     resource_id = Column(Integer, ForeignKey('menu_items.id'), primary_key=True)
     resource_amount = Column(Integer)
 
-    menu_items = relationship("MenuItem", back_populates="resource_management")
+    menu_items = relationship("MenuItems", back_populates="resource_management")

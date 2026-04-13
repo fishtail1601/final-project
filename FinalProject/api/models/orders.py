@@ -16,4 +16,4 @@ class Order(Base):
     tracking_number = Column(Integer)
 
     order_details = relationship("OrderDetail", back_populates="order")
-    promotions = relationship("Promotion", back_populates="order")
+    promotions = relationship("Promotions", back_populates="order")

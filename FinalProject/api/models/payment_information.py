@@ -9,6 +9,6 @@ class PaymentInformation(Base):
     customer_id = Column(Integer, ForeignKey('customers.id'))
     card_information = Column(String(100))
     payment_type = Column(String(100))
-    transaction_status = BOOLEAN
+    transaction_status = Column(BOOLEAN)
 
     customer = relationship("Customer", back_populates="payment_information")

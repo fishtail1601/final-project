@@ -5,6 +5,7 @@ from ..dependencies.database import Base
 class Promotions(Base):
     __tablename__ = 'promotions'
 
+    order_id = Column(Integer, ForeignKey("orders.id"))
     promotion_code = Column(String, primary_key=True)
     expiration_date = Column(Date)
 
