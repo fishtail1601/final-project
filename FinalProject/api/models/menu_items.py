@@ -12,4 +12,5 @@ class MenuItems(Base):
     dish_calories = Column(Integer)
     dish_category = Column(String(100))
 
-    resource_management = relationship("ResourceManager", back_populates="menu_items")
+    resource_management = relationship("ResourceManagement", back_populates="menu_items")
+    promotions = relationship("Promotions", back_populates="menu_item")

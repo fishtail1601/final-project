@@ -7,5 +7,6 @@ class ResourceManagement(Base):
 
     resource_id = Column(Integer, ForeignKey('menu_items.id'), primary_key=True)
     resource_amount = Column(Integer)
+    unit = Column(String(50))
 
     menu_items = relationship("MenuItems", back_populates="resource_management")

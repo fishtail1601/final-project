@@ -13,3 +13,4 @@ class Customer(Base):
 
     ratings = relationship("Rating", back_populates="customer")
     payment_information = relationship("PaymentInformation", back_populates="customer")
+    orders = relationship("Order", back_populates="customer")
