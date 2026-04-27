@@ -2,23 +2,79 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response, Depends
 from ..models import orders as model
 from sqlalchemy.exc import SQLAlchemyError
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
+from ..models.orders import Order
+from ..models.order_details import OrderDetail
+from ..models.customers import Customer
+from ..schemas.orders import OrderCreate, GuestOrderCreate
 
+def create_with_account(db: Session, request: OrderCreate):
+    customer = db.query(Customer).filter(Customer.id == request.customer_id).first()
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer not found")
 
-def create(db: Session, request):
-    new_item = model.Order(
-        customer_name=request.customer_name,
-        description=request.description
+    new_order = Order(
+        customer_id=request.customer_id,
+        description=request.description,
+        order_status=request.order_status,
+        order_price=request.order_price,
+        tracking_number=request.tracking_number
     )
 
-    try:
-        db.add(new_item)
-        db.commit()
-        db.refresh(new_item)
-    except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+    db.add(new_order)
+    db.commit()
+    db.refresh(new_order)
 
-    return new_item
+    for item in request.order_details:
+        detail = OrderDetail(
+            order_id=new_order.id,
+            sandwich_id=item.sandwich_id,
+            amount=item.amount
+        )
+        db.add(detail)
+
+    db.commit()
+    db.refresh(new_order)
+    return new_order
+
+
+def create_guest_order(db: Session, request: GuestOrderCreate):
+    new_customer = Customer(
+        customer_name=request.customer_name,
+        customer_email=request.customer_email,
+        customer_phone_number=request.customer_phone_number,
+        customer_address=request.customer_address,
+        password=""
+    )
+
+    db.add(new_customer)
+    db.commit()
+    db.refresh(new_customer)
+
+    new_order = Order(
+        customer_id=new_customer.id,
+        description=request.description,
+        order_status=request.order_status,
+        order_price=request.order_price,
+        tracking_number=request.tracking_number
+    )
+
+    db.add(new_order)
+    db.commit()
+    db.refresh(new_order)
+
+    for item in request.order_details:
+        detail = OrderDetail(
+            order_id=new_order.id,
+            sandwich_id=item.sandwich_id,
+            amount=item.amount
+        )
+        db.add(detail)
+
+    db.commit()
+    db.refresh(new_order)
+    return new_order
 
 
 def read_all(db: Session):

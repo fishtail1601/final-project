@@ -1,7 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
 
-
 class CustomerBase(BaseModel):
     customer_name: str
     customer_email: str
@@ -9,8 +8,12 @@ class CustomerBase(BaseModel):
     customer_address: str
 
 
-class CustomerCreate(CustomerBase):
-    pass
+class CustomerCreate(BaseModel):
+    customer_name: str
+    customer_email: str
+    customer_phone_number: str | None = None
+    customer_address: str | None = None
+    password: str
 
 
 class CustomerUpdate(BaseModel):

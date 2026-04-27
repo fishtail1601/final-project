@@ -10,9 +10,14 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=schema.Order)
-def create(request: schema.OrderCreate, db: Session = Depends(get_db)):
-    return controller.create(db=db, request=request)
+@router.post("/with-account", response_model=schema.Order)
+def create_with_account(request: schema.OrderCreate, db: Session = Depends(get_db)):
+    return controller.create_with_account(db=db, request=request)
+
+
+@router.post("/guest", response_model=schema.Order)
+def create_guest_order(request: schema.GuestOrderCreate, db: Session = Depends(get_db)):
+    return controller.create_guest_order(db=db, request=request)
 
 
 @router.get("/", response_model=list[schema.Order])

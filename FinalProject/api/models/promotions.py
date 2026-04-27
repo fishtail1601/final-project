@@ -7,7 +7,7 @@ class Promotions(Base):
 
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=True)
     menu_item_id = Column(Integer, ForeignKey("menu_items.id"), nullable=True)
-    promotion_code = Column(String, primary_key=True)
+    promotion_code = Column(String(100), primary_key=True)
     expiration_date = Column(Date)
 
     order = relationship("Order", back_populates="promotions")
