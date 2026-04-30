@@ -16,6 +16,7 @@ class OrderBase(BaseModel):
 class OrderCreate(OrderBase):
     customer_id: int
     order_details: list[OrderDetailCreate] = []
+    promo_code: Optional[str] = None
 
 
 class GuestOrderCreate(OrderBase):
@@ -24,6 +25,7 @@ class GuestOrderCreate(OrderBase):
     customer_phone_number: Optional[str] = None
     customer_address: Optional[str] = None
     order_details: list[OrderDetailCreate] = []
+    promo_code: Optional[str] = None
 
 
 class OrderUpdate(BaseModel):

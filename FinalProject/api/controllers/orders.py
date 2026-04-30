@@ -7,18 +7,40 @@ from sqlalchemy.orm import Session
 from ..models.orders import Order
 from ..models.order_details import OrderDetail
 from ..models.customers import Customer
+from ..models.promotions import Promotions
 from ..schemas.orders import OrderCreate, GuestOrderCreate
+from datetime import date
+
+def apply_promo_code(db: Session, promo_code: str, order_price: float) -> tuple[float, Promotions]:
+    if not promo_code:
+        return order_price, None
+    promo = db.query(Promotions).filter(Promotions.promotion_code == promo_code).first()
+    if not promo:
+        raise HTTPException(status_code=400, detail="Invalid promo code")
+    if promo.expiration_date < date.today():
+        raise HTTPException(status_code=400, detail="Promo code expired")
+    if promo.discount_percentage:
+        discount = order_price * (promo.discount_percentage / 100)
+    elif promo.discount_amount:
+        discount = promo.discount_amount
+    else:
+        discount = 0
+    return max(0, order_price - discount), promo
+from datetime import date
 
 def create_with_account(db: Session, request: OrderCreate):
     customer = db.query(Customer).filter(Customer.id == request.customer_id).first()
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
 
+    # Apply promo code if provided
+    final_price, promo = apply_promo_code(db, request.promo_code, request.order_price)
+
     new_order = Order(
         customer_id=request.customer_id,
         description=request.description,
         order_status=request.order_status,
-        order_price=request.order_price,
+        order_price=final_price,
         tracking_number=request.tracking_number
     )
 
@@ -33,6 +55,11 @@ def create_with_account(db: Session, request: OrderCreate):
             amount=item.amount
         )
         db.add(detail)
+
+    # If promo was applied, link it to the order
+    if promo:
+        promo.order_id = new_order.id
+        db.commit()
 
     db.commit()
     db.refresh(new_order)
@@ -52,11 +79,14 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
     db.commit()
     db.refresh(new_customer)
 
+    # Apply promo code if provided
+    final_price, promo = apply_promo_code(db, request.promo_code, request.order_price)
+
     new_order = Order(
         customer_id=new_customer.id,
         description=request.description,
         order_status=request.order_status,
-        order_price=request.order_price,
+        order_price=final_price,
         tracking_number=request.tracking_number
     )
 
@@ -71,6 +101,11 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
             amount=item.amount
         )
         db.add(detail)
+
+    # If promo was applied, link it to the order
+    if promo:
+        promo.order_id = new_order.id
+        db.commit()
 
     db.commit()
     db.refresh(new_order)
