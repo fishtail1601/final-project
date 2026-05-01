@@ -9,6 +9,7 @@ from ..models.order_details import OrderDetail
 from ..models.customers import Customer
 from ..models.promotions import Promotions
 from ..schemas.orders import OrderCreate, GuestOrderCreate
+from datetime import timedelta, datetime
 from datetime import date
 
 def apply_promo_code(db: Session, promo_code: str, order_price: float) -> tuple[float, Promotions]:
@@ -26,12 +27,15 @@ def apply_promo_code(db: Session, promo_code: str, order_price: float) -> tuple[
     else:
         discount = 0
     return max(0, order_price - discount), promo
-from datetime import date
 
 def create_with_account(db: Session, request: OrderCreate):
     customer = db.query(Customer).filter(Customer.id == request.customer_id).first()
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
+
+    # estimate time of order completion:
+    prep_time = 8 + (len(request.order_details)) * 2
+    estimate = datetime.now() + timedelta(minutes=prep_time)
 
     # Apply promo code if provided
     final_price, promo = apply_promo_code(db, request.promo_code, request.order_price)
@@ -41,7 +45,9 @@ def create_with_account(db: Session, request: OrderCreate):
         description=request.description,
         order_status=request.order_status,
         order_price=final_price,
-        tracking_number=request.tracking_number
+        tracking_number=request.tracking_number,
+        ordered_time = datetime.now(),
+        estimated_completion_time = estimate
     )
 
     db.add(new_order)
@@ -79,6 +85,11 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
     db.commit()
     db.refresh(new_customer)
 
+    # estimate time of order completion:
+
+    prep_time = 8 + (len(request.order_details)) * 2
+    estimate = datetime.now() + timedelta(minutes=prep_time)
+
     # Apply promo code if provided
     final_price, promo = apply_promo_code(db, request.promo_code, request.order_price)
 
@@ -87,7 +98,9 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
         description=request.description,
         order_status=request.order_status,
         order_price=final_price,
-        tracking_number=request.tracking_number
+        tracking_number=request.tracking_number,
+        ordered_time = datetime.now(),
+        estimated_completion_time = estimate
     )
 
     db.add(new_order)
@@ -157,3 +170,21 @@ def delete(db: Session, item_id):
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def complete_order(db: Session, order_id: int):
+    db_order = db.query(Order).filter(Order.id == order_id).first()
+    if db_order:
+        db_order.order_status = "Completed"
+        db_order.actual_completion_time = datetime.now()
+        db.commit()
+        db.refresh(db_order)
+    return db_order
+
+
+def track_order(db: Session, tracking_num: str):
+    item = db.query(model.Order).filter(model.Order.tracking_number == tracking_num).first()
+
+    if not item:
+        raise HTTPException(status_code=404, detail="Tracking number not found!")
+
+    return item

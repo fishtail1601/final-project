@@ -41,6 +41,9 @@ class Order(OrderBase):
     customer_id: Optional[int] = None
     order_date: Optional[datetime] = None
     order_details: list[OrderDetail] = []
+    ordered_time: datetime
+    estimated_completion_time: Optional[datetime]
+    actual_completion_time: Optional[datetime]
 
     class ConfigDict:
         from_attributes = True

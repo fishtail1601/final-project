@@ -38,3 +38,7 @@ def update(item_id: int, request: schema.OrderUpdate, db: Session = Depends(get_
 @router.delete("/{item_id}")
 def delete(item_id: int, db: Session = Depends(get_db)):
     return controller.delete(db=db, item_id=item_id)
+
+@router.patch("/{item_id}/complete", response_model=schema.Order)
+def mark_as_complete(item_id: int, db: Session = Depends(get_db)):
+    return controller.complete_order(db=db, order_id=item_id)
