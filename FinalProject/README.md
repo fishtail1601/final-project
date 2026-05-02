@@ -12,7 +12,7 @@
 ### Test API by built-in docs:
 [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-### Endpoints
+## Endpoints
 #### Documents for how to run each endpoint and how they work
 
 ## Orders
