@@ -15,13 +15,13 @@
 ## Endpoints
 #### Documents for how to run each endpoint and how they work
 
-## Orders
+### Orders
 
-## Order Details
+### Order Details
 
-## Customers
+### Customers
 
-## Promotions
+### Promotions
 Promotions run mostly independent from everything else, it doesn't need a matching order id or anything like that so those fields are optional but still there in case promotion is tied to something specific.
 
 GET:
@@ -68,4 +68,4 @@ Sample DELETE
 This deletes an entry depending on what the designated promo code is
 promo_code: SPRING26
 
-## Analytics
+### Analytics
