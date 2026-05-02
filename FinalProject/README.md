@@ -38,9 +38,9 @@ POST
   "expiration_date": "2026-12-31"
 }
 
-Sample GET
+GET
 This just gets one promo code depending on what the code is. Gets one promotion entry
-Promotion Code: SUMMER10
+promo_code Code: SUMMER10
 
 Sample PUT
 This gets the entry with the designated promo code and updates it
