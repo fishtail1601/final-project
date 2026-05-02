@@ -20,6 +20,9 @@ class RatingUpdate(BaseModel):
 
 class Rating(RatingBase):
     id: int
+    customer_id: int
+    text: Optional[str]
+    rating: float
 
     class ConfigDict:
         from_attributes = True
