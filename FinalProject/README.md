@@ -12,6 +12,15 @@
 ### Test API by built-in docs:
 [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
+### Endpoints
+# Documents for how to run each endpoint and how they work
+
+## Orders
+
+## Order Details
+
+## Customers
+
 ## Promotions
 Promotions run mostly independent from everything else, it doesn't need a matching order id or anything like that so those fields are optional but still there in case promotion is tied to something specific.
 
@@ -58,3 +67,5 @@ promo_code: SUMMER10
 Sample DELETE
 This deletes an entry depending on what the designated promo code is
 promo_code: SPRING26
+
+## Analytics
