@@ -26,17 +26,7 @@ Promotions run mostly independent from everything else, it doesn't need a matchi
 
 GET:
 In this case the promotion, here is one of the promotions already in the database. Gets all promotion entries
-[
-  {
-    "order_id": null,
-    "menu_item_id": null, 
-    "promotion_code": "SUMMER10",
-    "discount_percentage": "10.50",
-    "discount_amount": null,
-    "expiration_date": "2026-12-31",
-    "id": 2
-  }
-]
+[{"order_id": null,"menu_item_id": null, "promotion_code": "SUMMER10","discount_percentage": "10.50","discount_amount": null,"expiration_date": "2026-12-31", "id": 2}]
 
 POST
 {
