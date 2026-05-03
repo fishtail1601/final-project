@@ -47,11 +47,8 @@ def all_review_data(db: Session = Depends(get_db)):
 @router.get("/reviews/negative", response_model=List[rating_schema.Rating])
 def negative_reviews(threshold: float = 3.0, db: Session = Depends(get_db)):
     return controller.get_negative_reviews(db, threshold)
-<<<<<<< HEAD
 
 
 @router.get("/data", response_model=analytics_schema.AnalyticsData)
 def analytics_data(db: Session = Depends(get_db)):
     return controller.get_analytics_data(db)
-=======
->>>>>>> 07b090fc0abda603ad7f2005900ed2c1e0911df0
