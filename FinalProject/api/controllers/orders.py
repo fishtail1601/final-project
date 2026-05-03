@@ -78,7 +78,7 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
         customer_email=request.customer_email,
         customer_phone_number=request.customer_phone_number,
         customer_address=request.customer_address,
-        password=""
+        hashed_password=""
     )
 
     db.add(new_customer)
