@@ -13,6 +13,7 @@ class OrderBase(BaseModel):
     customer_id: int
     description: Optional[str] = None
     order_status: Optional[str] = None
+    order_type: str
     order_price: Optional[float] = None
     tracking_number: Optional[str] = None
 

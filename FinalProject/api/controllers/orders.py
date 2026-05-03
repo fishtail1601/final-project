@@ -8,9 +8,27 @@ from ..models.orders import Order
 from ..models.order_details import OrderDetail
 from ..models.customers import Customer
 from ..models.promotions import Promotions
+from ..models.recipes import Recipe
+from ..models.resource_management import ResourceManagement
 from ..schemas.orders import OrderCreate, GuestOrderCreate
 from datetime import timedelta, datetime
 from datetime import date
+
+def check_ingredient_availability(db: Session, order_details: list):
+    for detail in order_details:
+        recipe_items = db.query(Recipe).filter(Recipe.sandwich_id == detail.sandwich_id).all()
+
+        for item in recipe_items:
+            resource = db.query(ResourceManagement).filter(ResourceManagement.resource_id == item.resource_id).first()
+
+            total_needed = item.amount * detail.amount
+
+            if not resource or resource.resource_amount < total_needed:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Insufficient ingredients: Not enough {resource.unit if resource else 'item'} to fulfill order."
+                )
+    return True
 
 def apply_promo_code(db: Session, promo_code: str, order_price: float) -> tuple[float, Promotions]:
     if not promo_code:
@@ -29,11 +47,13 @@ def apply_promo_code(db: Session, promo_code: str, order_price: float) -> tuple[
     return max(0, order_price - discount), promo
 
 def create_with_account(db: Session, request: OrderCreate):
+    check_ingredient_availability(db, request.order_details)
+
     customer = db.query(Customer).filter(Customer.id == request.customer_id).first()
     if not customer:
         raise HTTPException(status_code=404, detail="Customer not found")
 
-    # estimate time of order completion:
+    # Estimate time of order completion:
     prep_time = 8 + (len(request.order_details)) * 2
     estimate = datetime.now() + timedelta(minutes=prep_time)
 
@@ -44,11 +64,19 @@ def create_with_account(db: Session, request: OrderCreate):
         customer_id=request.customer_id,
         description=request.description,
         order_status=request.order_status,
+        order_type=request.order_type,
         order_price=final_price,
         tracking_number=request.tracking_number,
         ordered_time = datetime.now(),
         estimated_completion_time = estimate
     )
+
+    # subtract ingredients in order from database:
+    for detail in request.order_details:
+        recipe_items = db.query(Recipe).filter(Recipe.sandwich_id == detail.sandwich_id).all()
+        for item in recipe_items:
+            resource = db.query(ResourceManagement).filter(ResourceManagement.resource_id == item.resource_id).first()
+            resource.resource_amount -= (item.amount * detail.amount)
 
     db.add(new_order)
     db.commit()
@@ -73,6 +101,8 @@ def create_with_account(db: Session, request: OrderCreate):
 
 
 def create_guest_order(db: Session, request: GuestOrderCreate):
+    check_ingredient_availability(db, request.order_details)
+
     new_customer = Customer(
         customer_name=request.customer_name,
         customer_email=request.customer_email,
@@ -97,6 +127,7 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
         customer_id=new_customer.id,
         description=request.description,
         order_status=request.order_status,
+        order_type=request.order_type,
         order_price=final_price,
         tracking_number=request.tracking_number,
         ordered_time = datetime.now(),
@@ -119,6 +150,13 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
     if promo:
         promo.order_id = new_order.id
         db.commit()
+
+    # subtract ingredients in order from database:
+    for detail in request.order_details:
+        recipe_items = db.query(Recipe).filter(Recipe.sandwich_id == detail.sandwich_id).all()
+        for item in recipe_items:
+            resource = db.query(ResourceManagement).filter(ResourceManagement.resource_id == item.resource_id).first()
+            resource.resource_amount -= (item.amount * detail.amount)
 
     db.commit()
     db.refresh(new_order)

@@ -12,6 +12,7 @@ class Order(Base):
     order_date = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
     description = Column(String(300))
     order_status = Column(String(50))
+    order_type = Column(String(50), nullable=False, server_default="Takeout")
     order_price = Column(DECIMAL(10, 2))
     tracking_number = Column(String(100))
 
