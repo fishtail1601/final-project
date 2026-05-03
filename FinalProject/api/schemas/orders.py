@@ -13,9 +13,7 @@ class OrderBase(BaseModel):
     customer_id: int
     description: Optional[str] = None
     order_status: Optional[str] = None
-    order_type: str
     order_price: Optional[float] = None
-    tracking_number: Optional[str] = None
 
 
 class OrderCreate(OrderBase):
@@ -32,7 +30,6 @@ class GuestOrderCreate(BaseModel):
     description: Optional[str] = None
     order_status: Optional[str] = None
     order_price: Optional[float] = None
-    tracking_number: Optional[str] = None
     order_details: list[OrderItemCreate] = []
     promo_code: Optional[str] = None
 
@@ -42,7 +39,6 @@ class OrderUpdate(BaseModel):
     description: Optional[str] = None
     order_status: Optional[str] = None
     order_price: Optional[float] = None
-    tracking_number: Optional[str] = None
 
 
 class Order(OrderBase):
@@ -50,7 +46,7 @@ class Order(OrderBase):
     customer_id: Optional[int] = None
     order_date: Optional[datetime] = None
     order_details: list[OrderDetail] = []
-    ordered_time: datetime
+    ordered_time: Optional[datetime] = None
     estimated_completion_time: Optional[datetime]
     actual_completion_time: Optional[datetime]
 

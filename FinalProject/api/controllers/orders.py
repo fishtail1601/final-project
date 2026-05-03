@@ -64,9 +64,7 @@ def create_with_account(db: Session, request: OrderCreate):
         customer_id=request.customer_id,
         description=request.description,
         order_status=request.order_status,
-        order_type=request.order_type,
         order_price=final_price,
-        tracking_number=request.tracking_number,
         ordered_time = datetime.now(),
         estimated_completion_time = estimate
     )
@@ -127,9 +125,7 @@ def create_guest_order(db: Session, request: GuestOrderCreate):
         customer_id=new_customer.id,
         description=request.description,
         order_status=request.order_status,
-        order_type=request.order_type,
         order_price=final_price,
-        tracking_number=request.tracking_number,
         ordered_time = datetime.now(),
         estimated_completion_time = estimate
     )
@@ -219,10 +215,3 @@ def complete_order(db: Session, order_id: int):
     return db_order
 
 
-def track_order(db: Session, tracking_num: str):
-    item = db.query(model.Order).filter(model.Order.tracking_number == tracking_num).first()
-
-    if not item:
-        raise HTTPException(status_code=404, detail="Tracking number not found!")
-
-    return item

@@ -18,7 +18,6 @@ def _order_data(order: Order):
         "description": order.description,
         "order_status": order.order_status,
         "order_price": float(order.order_price or 0),
-        "tracking_number": order.tracking_number,
         "ordered_time": order.ordered_time,
         "estimated_completion_time": order.estimated_completion_time,
         "actual_completion_time": order.actual_completion_time,

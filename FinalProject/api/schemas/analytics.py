@@ -11,7 +11,6 @@ class AnalyticsOrder(BaseModel):
     description: Optional[str] = None
     order_status: Optional[str] = None
     order_price: Optional[float] = None
-    tracking_number: Optional[str] = None
     ordered_time: Optional[datetime] = None
     estimated_completion_time: Optional[datetime] = None
     actual_completion_time: Optional[datetime] = None

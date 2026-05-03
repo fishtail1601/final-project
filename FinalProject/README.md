@@ -208,7 +208,6 @@ Request body:
   "description": "Lunch order",
   "order_status": "Pending",
   "order_price": 15.98,
-  "tracking_number": "ABC123",
   "order_details": [
     {
       "sandwich_id": 1,
@@ -242,7 +241,6 @@ Request body:
   "description": "Guest lunch order",
   "order_status": "Pending",
   "order_price": 12.5,
-  "tracking_number": "GUEST123",
   "order_details": [
     {
       "sandwich_id": 1,
@@ -275,8 +273,7 @@ Example body:
 
 ```json
 {
-  "order_status": "In Progress",
-  "tracking_number": "ABC123"
+  "order_status": "In Progress"
 }
 ```
 
