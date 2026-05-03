@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Sandwich Maker API
 
 This project is a FastAPI backend for a sandwich/food ordering system. It supports customers, menu items, orders, order details, promotions, and analytics data for orders, customers, and reviews.
@@ -629,6 +628,3 @@ promo_code: SUMMER10
 Sample DELETE
 This deletes an entry depending on what the designated promo code is
 promo_code: SPRING26
-
-### Analytics
->>>>>>> 07b090fc0abda603ad7f2005900ed2c1e0911df0
